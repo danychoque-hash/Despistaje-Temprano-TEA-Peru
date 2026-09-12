@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fisioterapia del Funcionamiento Conjunto · Cuestionario de detección de señales de autismo</title>
+<style>
+  :root{
+    --cream:#EEF2FC;
+    --paper:#FFFFFF;
+    --ink:#1A2144;
+    --ink-soft:#4C5A88;
+    --sage:#3F5EE0;
+    --sage-deep:#22349C;
+    --clay:#D9A441;
+    --sky:#7C93E8;
+    --sand:#E1E7FA;
+    --line:#C7D1F2;
+    --risk-low:#2E8B67;
+    --risk-mid:#C98A3A;
+    --risk-high:#C1443D;
+    --radius:14px;
+    --serif:'Iowan Old Style','Palatino Linotype', Palatino, Georgia, serif;
+    --sans:'Avenir Next','Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:'IBM Plex Mono', 'Courier New', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{
+    max-width:760px;
+    margin:0 auto;
+    padding:32px 20px 80px;
+  }
+  header.brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:28px;
+  }
+  .mark{
+    width:40px;height:40px;flex:0 0 auto;
+  }
+  .brand h1{
+    font-family:var(--serif);
+    font-size:1.05rem;
+    font-weight:600;
+    margin:0;
+    color:var(--sage-deep);
+    letter-spacing:.2px;
+    line-height:1.25;
+  }
+  .brand p{margin:0;font-size:.78rem;color:var(--ink-soft);}
+
+  .main-title{
+    font-family:var(--serif);
+    font-size:1.55rem;
+    line-height:1.25;
+    color:var(--sage-deep);
+    text-align:center;
+    margin:0 0 30px;
+    letter-spacing:.2px;
+  }
+  @media (max-width:600px){.main-title{font-size:1.2rem;}}
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px;
+    margin-bottom:20px;
+    box-shadow:0 1px 2px rgba(31,42,36,.04);
+  }
+  @media (max-width:600px){.card{padding:22px;}}
+
+  h2.section-title{
+    font-family:var(--serif);
+    font-size:1.5rem;
+    color:var(--ink);
+    margin:0 0 6px;
+  }
+  .eyebrow{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:var(--sage-deep);
+    font-weight:700;
+    margin-bottom:8px;
+    display:block;
+  }
+  p.lede{color:var(--ink-soft);font-size:.98rem;margin:0 0 20px;}
+
+  .notice{
+    background:var(--sand);
+    border-left:3px solid var(--clay);
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:.85rem;
+    color:var(--ink-soft);
+    margin:18px 0;
+  }
+  .notice strong{color:var(--ink);}
+
+  /* form elements */
+  label{
+    display:block;
+    font-size:.82rem;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  .field{margin-bottom:18px;}
+  input[type=text], input[type=date], input[type=number], textarea, select{
+    width:100%;
+    font-family:var(--sans);
+    font-size:.95rem;
+    padding:11px 13px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:var(--cream);
+    color:var(--ink);
+  }
+  input:focus, textarea:focus, select:focus{
+    outline:2px solid var(--sage);
+    outline-offset:1px;
+    background:var(--paper);
+  }
+  textarea{resize:vertical;min-height:80px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:560px){.grid2{grid-template-columns:1fr;}}
+
+  fieldset{border:none;padding:0;margin:0 0 22px;}
+  .age-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:560px){.age-choice{grid-template-columns:1fr;}}
+  .choice-card{
+    border:1.5px solid var(--line);
+    border-radius:11px;
+    padding:16px;
+    cursor:pointer;
+    background:var(--cream);
+    transition:border-color .15s, background .15s;
+  }
+  .choice-card:hover{border-color:var(--sage);}
+  .choice-card.selected{
+    border-color:var(--sage-deep);
+    background:#EEF3EA;
+  }
+  .choice-card h3{margin:0 0 4px;font-size:.98rem;font-family:var(--serif);}
+  .choice-card p{margin:0;font-size:.8rem;color:var(--ink-soft);}
+
+  .who-choice{display:flex;gap:10px;flex-wrap:wrap;}
+  .pill{
+    border:1.5px solid var(--line);
+    border-radius:999px;
+    padding:8px 16px;
+    font-size:.85rem;
+    cursor:pointer;
+    background:var(--cream);
+    color:var(--ink-soft);
+  }
+  .pill.selected{
+    background:var(--sage-deep);
+    border-color:var(--sage-deep);
+    color:#fff;
+    font-weight:600;
+  }
+
+  button{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:.92rem;
+    border:none;
+    border-radius:999px;
+    padding:13px 26px;
+    cursor:pointer;
+    transition:transform .1s, opacity .15s;
+  }
+  button:active{transform:scale(.98);}
+  .btn-primary{background:var(--sage-deep);color:#fff;}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line);}
+  .btn-row{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px;}
+
+  /* progress */
+  .progress-wrap{margin-bottom:26px;}
+  .progress-track{
+    height:6px;background:var(--sand);border-radius:99px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;background:linear-gradient(90deg,var(--sage) 0%, var(--sage-deep) 100%);
+    border-radius:99px;transition:width .3s ease;
+  }
+  .progress-label{
+    display:flex;justify-content:space-between;
+    font-size:.72rem;color:var(--ink-soft);margin-top:6px;
+    font-family:var(--mono);
+  }
+
+  /* question */
+  .q-num{
+    font-family:var(--mono);
+    font-size:.72rem;
+    color:var(--sage-deep);
+    letter-spacing:.08em;
+  }
+  .q-text{
+    font-family:var(--serif);
+    font-size:1.28rem;
+    line-height:1.4;
+    color:var(--ink);
+    margin:8px 0 22px;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{
+    text-align:left;
+    background:var(--cream);
+    border:1.5px solid var(--line);
+    border-radius:11px;
+    padding:14px 16px;
+    font-size:.95rem;
+    font-weight:500;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .opt-btn .dot{
+    width:10px;height:10px;border-radius:50%;
+    border:2px solid var(--line);
+    flex:0 0 auto;
+  }
+  .opt-btn:hover{border-color:var(--sage);}
+  .opt-btn.chosen{border-color:var(--sage-deep);background:#EEF3EA;}
+  .opt-btn.chosen .dot{background:var(--sage-deep);border-color:var(--sage-deep);}
+
+  /* footprints trail */
+  .trail{
+    display:flex;gap:5px;margin-bottom:18px;flex-wrap:wrap;
+  }
+  .trail .step{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--sand);
+  }
+  .trail .step.done{background:var(--sage-deep);}
+  .trail .step.current{background:var(--clay);}
+
+  /* result */
+  .result-badge{
+    display:inline-block;
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:.78rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:14px;
+  }
+  .badge-low{background:#E4EFE6;color:var(--risk-low);}
+  .badge-mid{background:#F6E9D6;color:var(--risk-mid);}
+  .badge-high{background:#F5E0DB;color:var(--risk-high);}
+
+  .risk-meter{
+    height:10px;border-radius:99px;background:var(--sand);overflow:hidden;margin:14px 0 6px;
+  }
+  .risk-fill{height:100%;border-radius:99px;}
+
+  .rec-box{
+    border:1px solid var(--line);
+    border-radius:11px;
+    padding:18px;
+    background:var(--cream);
+    margin-top:16px;
+  }
+  .rec-box h4{margin:0 0 8px;font-family:var(--serif);font-size:1.05rem;}
+  .rec-box p{margin:0;font-size:.9rem;color:var(--ink-soft);}
+
+  .summary-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;
+    font-size:.85rem;margin:16px 0;
+  }
+  .summary-grid dt{color:var(--ink-soft);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;}
+  .summary-grid dd{margin:2px 0 0;font-weight:600;}
+
+  @media print{
+    body{background:#fff;}
+    .no-print{display:none !important;}
+    .card{box-shadow:none;border:1px solid #ccc;}
+  }
+
+  .hidden{display:none !important;}
+  .footer-note{
+    text-align:center;font-size:.75rem;color:var(--ink-soft);margin-top:30px;
+  }
+  .saved-item{
+    display:flex;justify-content:space-between;align-items:center;
+    border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;background:var(--cream);
+  }
+  .saved-item .info b{display:block;font-size:.9rem;}
+  .saved-item .info span{font-size:.76rem;color:var(--ink-soft);}
+  .saved-item .actions{display:flex;gap:8px;}
+  .saved-item button{padding:7px 14px;font-size:.78rem;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="brand">
+    <svg class="mark" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="19" stroke="#3F5EE0" stroke-width="1.5"/>
+      <circle cx="14" cy="13" r="4.3" fill="#22349C"/>
+      <circle cx="24.5" cy="16" r="3.1" fill="#22349C"/>
+      <path d="M9.5 16.5C7.5 23.5 15.5 29 24 26C29 24.2 28.5 19.3 25.3 17.3" stroke="#3F5EE0" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M20 27.5c-1.6-1.1-4.9-3.4-4.9-6.1 0-1.6 1.2-2.7 2.6-2.7 1 0 1.8.5 2.3 1.3.5-.8 1.3-1.3 2.3-1.3 1.4 0 2.6 1.1 2.6 2.7 0 2.7-3.3 5-4.9 6.1z" fill="#D9A441"/>
+    </svg>
+    <div>
+      <h1>Fisioterapia del Funcionamiento Conjunto</h1>
+      <p>Hospital Edgardo Rebagliati Martins - EsSalud</p>
+      <p>Rehabilitación Pediátrica</p>
+      <p>- Lima, Perú</p>
+    </div>
+  </header>
+
+  <h2 class="main-title">CRIBADO PARA LA DETECCIÓN TEMPRANA DE AUTISMO (TEA) EN LA POBLACIÓN INFANTIL</h2>
+
+  <!-- SAVED EVALUATIONS -->
+  <div id="screen-saved" class="card hidden">
+    <span class="eyebrow">Registros en este dispositivo</span>
+    <h2 class="section-title">Evaluaciones guardadas</h2>
+    <p class="lede">Estas evaluaciones se guardaron previamente en este navegador.</p>
+    <div id="saved-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+
+  <!-- SCREEN 0: INTRO / DATOS -->
+  <div id="screen-intro" class="card">
+    <span class="eyebrow">Antes de empezar</span>
+    <h2 class="section-title">Datos de la evaluación</h2>
+    <p class="lede">Esta herramienta ayuda a identificar señales tempranas que ameritan una evaluación especializada. No reemplaza un diagnóstico clínico.</p>
+
+    <div class="notice"><strong>Importante:</strong> los resultados son orientativos. Un puntaje elevado no es un diagnóstico; siempre debe confirmarse con un profesional especializado en desarrollo infantil.</div>
+
+    <div class="field">
+      <label>¿Quién completa el cuestionario?</label>
+      <div class="who-choice" id="who-choice">
+        <div class="pill" data-who="Padre/Madre/Cuidador">Padre / Madre / Cuidador</div>
+        <div class="pill" data-who="Profesional">Profesional</div>
+        <div class="pill" data-who="Ambos">Ambos</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="field">
+        <label for="ninoNombre">Nombre del niño/a</label>
+        <input type="text" id="ninoNombre" placeholder="Nombre completo">
+      </div>
+      <div class="field">
+        <label for="ninoFNac">Fecha de nacimiento</label>
+        <input type="date" id="ninoFNac">
+      </div>
+      <div class="field">
+        <label for="ninoEdad">Edad actual</label>
+        <input type="text" id="ninoEdad" placeholder="Ej. 2 años 4 meses">
+      </div>
+      <div class="field">
+        <label for="fechaEval">Fecha de evaluación</label>
+        <input type="date" id="fechaEval">
+      </div>
+      <div class="field">
+        <label for="evaluador">Nombre del evaluador</label>
+        <input type="text" id="evaluador" placeholder="Nombre del profesional o familiar">
+      </div>
+      <div class="field">
+        <label for="diagnosticos">Diagnósticos asociados (si aplica)</label>
+        <input type="text" id="diagnosticos" placeholder="Ej. prematuridad, hipotonía, ninguno">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Rango de edad del niño/a (para elegir el set de preguntas)</label>
+      <div class="age-choice" id="age-choice">
+        <div class="choice-card" data-age="temprana">
+          <h3>16 – 30 meses</h3>
+          <p>Preguntas basadas en M-CHAT-R, para señales muy tempranas.</p>
+        </div>
+        <div class="choice-card" data-age="mayor">
+          <h3>3 años en adelante</h3>
+          <p>Señales generales de alerta + rasgos de comunicación e interacción social.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <span></span>
+      <button class="btn-primary" id="btn-start" disabled>Comenzar cuestionario →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 1: QUESTIONNAIRE -->
+  <div id="screen-quiz" class="card hidden">
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="progress-label">
+        <span id="progress-text">Pregunta 1</span>
+        <span id="progress-set"></span>
+      </div>
+    </div>
+    <div class="trail" id="trail"></div>
+
+    <span class="q-num" id="q-num">PREGUNTA 1</span>
+    <div class="q-text" id="q-text">—</div>
+    <div class="options" id="q-options"></div>
+
+    <div class="btn-row">
+      <button class="btn-ghost" id="btn-back">← Anterior</button>
+      <button class="btn-primary" id="btn-next" disabled>Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: RESULT -->
+  <div id="screen-result" class="card hidden">
+    <span class="eyebrow">Resultado de la evaluación</span>
+    <h2 class="section-title" id="result-title">—</h2>
+
+    <div id="result-badge-wrap"></div>
+
+    <div class="risk-meter"><div class="risk-fill" id="risk-fill"></div></div>
+    <p style="font-size:.82rem;color:var(--ink-soft);margin-top:2px;" id="risk-score-label">—</p>
+
+    <div class="rec-box" id="rec-box">
+      <h4>Recomendación</h4>
+      <p id="rec-text">—</p>
+    </div>
+
+    <dl class="summary-grid">
+      <div><dt>Niño/a</dt><dd id="sum-nombre">—</dd></div>
+      <div><dt>Edad</dt><dd id="sum-edad">—</dd></div>
+      <div><dt>Fecha de evaluación</dt><dd id="sum-fecha">—</dd></div>
+      <div><dt>Evaluador</dt><dd id="sum-evaluador">—</dd></div>
+      <div><dt>Diagnósticos asociados</dt><dd id="sum-diag">—</dd></div>
+      <div><dt>Cuestionario aplicado</dt><dd id="sum-tipo">—</dd></div>
+    </dl>
+
+    <div class="field">
+      <label for="observaciones">Observaciones del evaluador</label>
+      <textarea id="observaciones" placeholder="Anote comportamientos observados, contexto de la evaluación, o cualquier detalle relevante..."></textarea>
+    </div>
+
+    <div class="notice">Este resultado es una herramienta de tamizaje/orientación, no constituye un diagnóstico clínico. La confirmación diagnóstica solo puede realizarla un profesional especializado (neuropediatra, psiquiatra pediátrico o equipo multidisciplinario en desarrollo infantil).</div>
+
+    <div class="btn-row no-print" style="flex-wrap:wrap;">
+      <button class="btn-ghost" id="btn-restart">Nueva evaluación</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn-ghost" id="btn-save">Guardar evaluación ✓</button>
+        <button class="btn-primary" id="btn-download">Descargar informe ⤓</button>
+      </div>
+    </div>
+    <p class="no-print" id="save-confirm" style="font-size:.78rem;color:var(--sage-deep);font-weight:600;margin-top:10px;display:none;">Evaluación guardada en este dispositivo.</p>
+  </div>
+
+  <p class="footer-note no-print">Herramienta de apoyo para la detección temprana · Uso profesional y familiar</p>
+</div>
+
+<script>
+(function(){
+  // ---------- DATA ----------
+  const MCHAT = [
+    {t:"Si usted señala algo al otro lado de la habitación, ¿su hijo/a lo mira?", risk:"no"},
+    {t:"¿Alguna vez se ha preguntado si su hijo/a podría ser sordo/a?", risk:"si"},
+    {t:"¿Su hijo/a juega juegos de fantasía o imaginación (ej. hacer de cuenta que habla por teléfono, cuidar a una muñeca)?", risk:"no"},
+    {t:"¿A su hijo/a le gusta treparse a las cosas?", risk:"no"},
+    {t:"¿Su hijo/a hace movimientos raros con los dedos cerca de sus propios ojos?", risk:"si"},
+    {t:"¿Su hijo/a señala con un dedo para pedir algo o pedir ayuda?", risk:"no"},
+    {t:"¿Su hijo/a señala con un dedo para mostrarle algo interesante?", risk:"no"},
+    {t:"¿Su hijo/a está interesado en otros niños?", risk:"no"},
+    {t:"¿Su hijo/a le muestra cosas, acercándoselas o levantándolas para que usted las vea?", risk:"no"},
+    {t:"¿Su hijo/a responde cuando usted lo/a llama por su nombre?", risk:"no"},
+    {t:"Cuando usted sonríe a su hijo/a, ¿él o ella le devuelve la sonrisa?", risk:"no"},
+    {t:"¿A su hijo/a le molestan los ruidos cotidianos (ej. aspiradora, música fuerte)?", risk:"si"},
+    {t:"¿Su hijo/a camina solo/a?", risk:"no"},
+    {t:"¿Su hijo/a lo/a mira a los ojos cuando le habla, juega con él/ella o lo/a viste?", risk:"no"},
+    {t:"¿Su hijo/a trata de imitar lo que usted hace (ej. saludar con la mano, aplaudir)?", risk:"no"},
+    {t:"Si usted gira la cabeza para mirar algo, ¿su hijo/a mira a su alrededor para ver qué está mirando?", risk:"no"},
+    {t:"¿Su hijo/a trata de que usted lo/a mire a él/ella (busca su atención o aprobación)?", risk:"no"},
+    {t:"¿Su hijo/a entiende cuando usted le dice que haga algo (sin gestos)?", risk:"no"},
+    {t:"Si algo nuevo ocurre, ¿su hijo/a mira su cara para ver cómo reacciona usted?", risk:"no"},
+    {t:"¿A su hijo/a le gusta el movimiento (que lo/a hamaquen, saltar en sus rodillas)?", risk:"no"},
+  ];
+
+  const MAYOR = [
+    {t:"¿El niño/a mantiene contacto visual de forma natural durante una conversación o juego?", risk:"no"},
+    {t:"¿Comparte intereses o logros con otras personas (mostrando, señalando o comentando)?", risk:"no"},
+    {t:"¿Responde cuando se le llama por su nombre en la mayoría de las ocasiones?", risk:"no"},
+    {t:"¿Utiliza el lenguaje de forma flexible para conversar (más allá de repetir frases)?", risk:"no"},
+    {t:"¿Muestra interés en jugar o socializar con otros niños de su edad?", risk:"no"},
+    {t:"¿Se involucra en juego imaginativo o simbólico apropiado para su edad?", risk:"no"},
+    {t:"¿Presenta movimientos repetitivos con el cuerpo, manos o dedos (aleteo, balanceo, giros)?", risk:"si"},
+    {t:"¿Tiene intereses muy intensos o inusualmente restringidos en ciertos temas u objetos?", risk:"si"},
+    {t:"¿Se altera significativamente ante pequeños cambios en su rutina diaria?", risk:"si"},
+    {t:"¿Presenta reacciones inusuales a estímulos sensoriales (sonidos, texturas, luces, olores)?", risk:"si"},
+    {t:"¿Alinea, ordena o clasifica objetos de forma repetitiva sin un propósito de juego claro?", risk:"si"},
+    {t:"¿Usa gestos (señalar, saludar, asentir) para comunicarse de forma espontánea?", risk:"no"},
+    {t:"¿Comprende bromas, sarcasmo o dobles sentidos apropiados para su edad?", risk:"no"},
+    {t:"¿Ajusta su comportamiento según el contexto social (ej. hablar distinto con un adulto que con un compañero)?", risk:"no"},
+    {t:"¿Presenta un desarrollo del lenguaje notablemente distinto al de otros niños de su edad (regresión, ecolalia, ausencia de lenguaje)?", risk:"si"},
+    {t:"¿Expresa y reconoce emociones propias y ajenas de forma adecuada para su edad?", risk:"no"},
+  ];
+
+  // ---------- STATE ----------
+  let state = {
+    who: null,
+    ageSet: null,
+    idx: 0,
+    answers: [],
+    questions: []
+  };
+
+  // ---------- INTRO SCREEN LOGIC ----------
+  const whoChoice = document.getElementById('who-choice');
+  const ageChoice = document.getElementById('age-choice');
+  const btnStart = document.getElementById('btn-start');
+
+  whoChoice.addEventListener('click', (e)=>{
+    const pill = e.target.closest('.pill');
+    if(!pill) return;
+    [...whoChoice.children].forEach(c=>c.classList.remove('selected'));
+    pill.classList.add('selected');
+    state.who = pill.dataset.who;
+    checkStartEnabled();
+  });
+
+  ageChoice.addEventListener('click', (e)=>{
+    const card = e.target.closest('.choice-card');
+    if(!card) return;
+    [...ageChoice.children].forEach(c=>c.classList.remove('selected'));
+    card.classList.add('selected');
+    state.ageSet = card.dataset.age;
+    checkStartEnabled();
+  });
+
+  function checkStartEnabled(){
+    btnStart.disabled = !(state.who && state.ageSet);
+  }
+
+  btnStart.addEventListener('click', ()=>{
+    state.questions = state.ageSet === 'temprana' ? MCHAT : MAYOR;
+    state.answers = new Array(state.questions.length).fill(null);
+    state.idx = 0;
+    document.getElementById('screen-intro').classList.add('hidden');
+    document.getElementById('screen-quiz').classList.remove('hidden');
+    renderQuestion();
+  });
+
+  // ---------- QUIZ SCREEN LOGIC ----------
+  const qNum = document.getElementById('q-num');
+  const qText = document.getElementById('q-text');
+  const qOptions = document.getElementById('q-options');
+  const progressFill = document.getElementById('progress-fill');
+  const progressText = document.getElementById('progress-text');
+  const progressSet = document.getElementById('progress-set');
+  const trail = document.getElementById('trail');
+  const btnBack = document.getElementById('btn-back');
+  const btnNext = document.getElementById('btn-next');
+
+  function renderTrail(){
+    trail.innerHTML = '';
+    state.questions.forEach((_,i)=>{
+      const d = document.createElement('div');
+      d.className = 'step' + (i < state.idx ? ' done' : i === state.idx ? ' current' : '');
+      trail.appendChild(d);
+    });
+  }
+
+  function renderQuestion(){
+    const total = state.questions.length;
+    const q = state.questions[state.idx];
+    qNum.textContent = `PREGUNTA ${state.idx+1} DE ${total}`;
+    qText.textContent = q.t;
+    progressFill.style.width = ((state.idx)/total*100) + '%';
+    progressText.textContent = `Pregunta ${state.idx+1} de ${total}`;
+    progressSet.textContent = state.ageSet === 'temprana' ? 'M-CHAT-R (16–30 meses)' : 'Señales generales + AQ (3+ años)';
+    renderTrail();
+
+    qOptions.innerHTML = '';
+    ['Sí','No'].forEach(label=>{
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.innerHTML = `<span class="dot"></span>${label}`;
+      const val = label === 'Sí' ? 'si' : 'no';
+      if(state.answers[state.idx] === val) btn.classList.add('chosen');
+      btn.addEventListener('click', ()=>{
+        state.answers[state.idx] = val;
+        renderQuestion();
+      });
+      qOptions.appendChild(btn);
+    });
+
+    btnNext.disabled = state.answers[state.idx] === null;
+    btnNext.textContent = state.idx === total - 1 ? 'Ver resultado →' : 'Siguiente →';
+    btnBack.style.visibility = state.idx === 0 ? 'hidden' : 'visible';
+  }
+
+  btnBack.addEventListener('click', ()=>{
+    if(state.idx > 0){ state.idx--; renderQuestion(); }
+  });
+
+  btnNext.addEventListener('click', ()=>{
+    if(state.idx < state.questions.length - 1){
+      state.idx++;
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  });
+
+  // ---------- RESULT SCREEN LOGIC ----------
+  function computeRisk(){
+    let flagged = 0;
+    state.questions.forEach((q,i)=>{
+      if(state.answers[i] === q.risk) flagged++;
+    });
+    const total = state.questions.length;
+    const pct = Math.round((flagged/total)*100);
+    let level = 'low';
+    if(state.ageSet === 'temprana'){
+      if(flagged >= 3 && flagged <= 7) level = 'mid';
+      else if(flagged > 7) level = 'high';
+    } else {
+      if(flagged >= 3 && flagged <= 6) level = 'mid';
+      else if(flagged > 6) level = 'high';
+    }
+    return {flagged, total, pct, level};
+  }
+
+  function showResult(){
+    document.getElementById('screen-quiz').classList.add('hidden');
+    document.getElementById('screen-result').classList.remove('hidden');
+
+    const {flagged, total, pct, level} = computeRisk();
+
+    const badgeWrap = document.getElementById('result-badge-wrap');
+    const riskFill = document.getElementById('risk-fill');
+    const riskLabel = document.getElementById('risk-score-label');
+    const recText = document.getElementById('rec-text');
+    const resultTitle = document.getElementById('result-title');
+
+    const config = {
+      low: {badge:'badge-low', color:'var(--risk-low)', title:'Riesgo bajo',
+        rec:'No se identificaron señales significativas en este tamizaje. Se recomienda continuar con el seguimiento habitual del desarrollo en los controles pediátricos de rutina.'},
+      mid: {badge:'badge-mid', color:'var(--risk-mid)', title:'Riesgo moderado',
+        rec:'Se identificaron algunas señales de alerta. Se recomienda una evaluación más detallada con un profesional especializado en desarrollo infantil en las próximas semanas, y repetir el tamizaje en un periodo corto.'},
+      high: {badge:'badge-high', color:'var(--risk-high)', title:'Riesgo alto',
+        rec:'Se identificó un número importante de señales de alerta. Se recomienda derivar de forma prioritaria a una evaluación diagnóstica especializada (neuropediatría, psiquiatra pediátrico o equipo multidisciplinario) lo antes posible.'}
+    };
+    const c = config[level];
+
+    resultTitle.textContent = c.title;
+    badgeWrap.innerHTML = `<span class="result-badge ${c.badge}">${c.title}</span>`;
+    riskFill.style.width = pct + '%';
+    riskFill.style.background = c.color;
+    riskLabel.textContent = `${flagged} de ${total} ítems con señal de alerta (${pct}%)`;
+    recText.textContent = c.rec;
+
+    document.getElementById('sum-nombre').textContent = document.getElementById('ninoNombre').value || '—';
+    document.getElementById('sum-edad').textContent = document.getElementById('ninoEdad').value || '—';
+    document.getElementById('sum-fecha').textContent = document.getElementById('fechaEval').value || '—';
+    document.getElementById('sum-evaluador').textContent = document.getElementById('evaluador').value || '—';
+    document.getElementById('sum-diag').textContent = document.getElementById('diagnosticos').value || 'Ninguno reportado';
+    document.getElementById('sum-tipo').textContent = state.ageSet === 'temprana' ? 'M-CHAT-R (16–30 meses)' : 'Señales generales + AQ (3+ años)';
+
+    state.lastResult = {flagged, total, pct, level, title:c.title, rec:c.rec};
+  }
+
+  function collectRecord(){
+    return {
+      nombre: document.getElementById('ninoNombre').value || 'Sin nombre',
+      fNac: document.getElementById('ninoFNac').value || '',
+      edad: document.getElementById('ninoEdad').value || '',
+      fechaEval: document.getElementById('fechaEval').value || '',
+      evaluador: document.getElementById('evaluador').value || '',
+      diagnosticos: document.getElementById('diagnosticos').value || '',
+      who: state.who,
+      tipo: state.ageSet === 'temprana' ? 'M-CHAT-R (16–30 meses)' : 'Señales generales + AQ (3+ años)',
+      observaciones: document.getElementById('observaciones').value || '',
+      resultado: state.lastResult,
+      guardadoEl: new Date().toISOString()
+    };
+  }
+
+  function getSavedRecords(){
+    try{ return JSON.parse(localStorage.getItem('camino_temprano_evaluaciones') || '[]'); }
+    catch(e){ return []; }
+  }
+
+  document.getElementById('btn-save').addEventListener('click', ()=>{
+    const record = collectRecord();
+    const records = getSavedRecords();
+    records.unshift(record);
+    try{
+      localStorage.setItem('camino_temprano_evaluaciones', JSON.stringify(records));
+      const conf = document.getElementById('save-confirm');
+      conf.style.display = 'block';
+      setTimeout(()=>{ conf.style.display = 'none'; }, 3500);
+    }catch(e){
+      alert('No se pudo guardar en este dispositivo. Puedes descargar el informe como respaldo.');
+    }
+  });
+
+  function downloadReport(){
+    const r = collectRecord();
+    const res = r.resultado || {};
+    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<title>Informe - ${r.nombre}</title>
+<style>
+body{font-family:Georgia,serif;max-width:680px;margin:40px auto;color:#1A2144;padding:0 20px;}
+h1{color:#22349C;font-size:1.4rem;border-bottom:2px solid #3F5EE0;padding-bottom:10px;}
+h2{color:#3F5EE0;font-size:1.05rem;margin-top:28px;}
+table{width:100%;border-collapse:collapse;margin-top:10px;}
+td{padding:6px 0;font-size:.95rem;vertical-align:top;}
+td.label{color:#4C5A88;width:220px;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;}
+.badge{display:inline-block;padding:5px 14px;border-radius:20px;font-weight:bold;background:#E1E7FA;color:#22349C;}
+.rec{background:#EEF2FC;border-left:4px solid #D9A441;padding:14px 16px;margin-top:10px;border-radius:6px;}
+.notice{font-size:.8rem;color:#4C5A88;margin-top:30px;border-top:1px solid #C7D1F2;padding-top:14px;}
+</style></head><body>
+<h1>Fisioterapia del Funcionamiento Conjunto — Hospital Edgardo Rebagliati Martins - EsSalud (Rehabilitación Pediátrica, Lima, Perú)</h1>
+<h2>Cribado para la detección temprana de autismo (TEA)</h2>
+<table>
+<tr><td class="label">Niño/a</td><td>${r.nombre}</td></tr>
+<tr><td class="label">Edad</td><td>${r.edad}</td></tr>
+<tr><td class="label">Fecha de evaluación</td><td>${r.fechaEval}</td></tr>
+<tr><td class="label">Evaluador</td><td>${r.evaluador}</td></tr>
+<tr><td class="label">Diagnósticos asociados</td><td>${r.diagnosticos || 'Ninguno reportado'}</td></tr>
+<tr><td class="label">Cuestionario aplicado</td><td>${r.tipo}</td></tr>
+<tr><td class="label">Completado por</td><td>${r.who || '—'}</td></tr>
+</table>
+<h2>Resultado</h2>
+<p><span class="badge">${res.title || '—'}</span></p>
+<p>${res.flagged ?? '—'} de ${res.total ?? '—'} ítems con señal de alerta (${res.pct ?? '—'}%)</p>
+<div class="rec"><strong>Recomendación:</strong> ${res.rec || '—'}</div>
+<h2>Observaciones del evaluador</h2>
+<p>${r.observaciones ? r.observaciones.replace(/\\n/g,'<br>') : 'Sin observaciones registradas.'}</p>
+<p class="notice">Este resultado es una herramienta de tamizaje/orientación, no constituye un diagnóstico clínico. La confirmación diagnóstica solo puede realizarla un profesional especializado (neuropediatra, psiquiatra pediátrico o equipo multidisciplinario en desarrollo infantil).</p>
+</body></html>`;
+    const blob = new Blob([html], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safeName = (r.nombre || 'evaluacion').replace(/[^a-z0-9áéíóúñ]+/gi,'_');
+    a.href = url;
+    a.download = `informe_${safeName}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function renderSavedList(){
+    const wrap = document.getElementById('saved-list');
+    const screenSaved = document.getElementById('screen-saved');
+    const records = getSavedRecords();
+    if(records.length === 0){ screenSaved.classList.add('hidden'); return; }
+    screenSaved.classList.remove('hidden');
+    wrap.innerHTML = '';
+    records.slice(0,8).forEach((r, i)=>{
+      const div = document.createElement('div');
+      div.className = 'saved-item';
+      const fecha = r.fechaEval || (r.guardadoEl ? r.guardadoEl.split('T')[0] : '');
+      div.innerHTML = `<div class="info"><b>${r.nombre}</b><span>${fecha} · ${r.resultado ? r.resultado.title : ''}</span></div>
+        <div class="actions"><button class="btn-ghost" data-del="${i}">Eliminar</button></div>`;
+      wrap.appendChild(div);
+    });
+    wrap.querySelectorAll('[data-del]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const idx = parseInt(btn.dataset.del,10);
+        const records = getSavedRecords();
+        records.splice(idx,1);
+        localStorage.setItem('camino_temprano_evaluaciones', JSON.stringify(records));
+        renderSavedList();
+      });
+    });
+  }
+  renderSavedList();
+
+  document.getElementById('btn-download').addEventListener('click', downloadReport);
+  document.getElementById('btn-restart').addEventListener('click', ()=>window.location.reload());
+
+})();
+</script>
+</body>
+</html>
