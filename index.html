@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fisioterapia del Funcionamiento Conjunto · Cuestionario de detección de señales de autismo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --cream:#EEF2FC;
@@ -20,8 +23,8 @@
     --risk-mid:#C98A3A;
     --risk-high:#C1443D;
     --radius:14px;
-    --serif:'Iowan Old Style','Palatino Linotype', Palatino, Georgia, serif;
-    --sans:'Avenir Next','Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    --serif:'Fraunces','Iowan Old Style','Palatino Linotype', Palatino, Georgia, serif;
+    --sans:'Figtree','Avenir Next','Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     --mono:'IBM Plex Mono', 'Courier New', monospace;
   }
   *{box-sizing:border-box;}
@@ -41,61 +44,71 @@
   header.brand{
     display:flex;
     align-items:center;
-    gap:14px;
-    margin-bottom:28px;
+    gap:16px;
+    margin-bottom:36px;
+    padding-bottom:22px;
+    border-bottom:1px solid var(--line);
   }
   .mark{
-    width:40px;height:40px;flex:0 0 auto;
+    width:44px;height:44px;flex:0 0 auto;
   }
   .brand h1{
     font-family:var(--serif);
-    font-size:1.05rem;
+    font-size:1.08rem;
     font-weight:600;
-    margin:0;
+    margin:0 0 3px;
     color:var(--sage-deep);
-    letter-spacing:.2px;
+    letter-spacing:.1px;
     line-height:1.25;
   }
-  .brand p{margin:0;font-size:.78rem;color:var(--ink-soft);}
-
+  .brand .institution{margin:0;font-size:.82rem;color:var(--ink-soft);line-height:1.45;}
+  .brand .institution b{color:var(--ink);font-weight:600;}
+ 
   .main-title{
     font-family:var(--serif);
-    font-size:1.55rem;
-    line-height:1.25;
-    color:var(--sage-deep);
-    text-align:center;
-    margin:0 0 30px;
-    letter-spacing:.2px;
+    font-weight:500;
+    font-size:1.5rem;
+    line-height:1.32;
+    color:var(--ink);
+    text-align:left;
+    max-width:34ch;
+    margin:0 0 32px;
   }
-  @media (max-width:600px){.main-title{font-size:1.2rem;}}
-
+  @media (max-width:600px){.main-title{font-size:1.22rem;}}
+ 
   .card{
     background:var(--paper);
     border:1px solid var(--line);
+    border-top:3px solid var(--sage-deep);
     border-radius:var(--radius);
-    padding:32px;
+    padding:34px 36px;
     margin-bottom:20px;
     box-shadow:0 1px 2px rgba(31,42,36,.04);
   }
-  @media (max-width:600px){.card{padding:22px;}}
-
+  @media (max-width:600px){.card{padding:24px 22px;}}
+ 
+  #screen-quiz.card{
+    border-top-color:var(--clay);
+  }
+ 
   h2.section-title{
     font-family:var(--serif);
+    font-weight:500;
     font-size:1.5rem;
     color:var(--ink);
     margin:0 0 6px;
   }
   .eyebrow{
-    font-size:.72rem;
-    text-transform:uppercase;
-    letter-spacing:.12em;
-    color:var(--sage-deep);
-    font-weight:700;
-    margin-bottom:8px;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:.92rem;
+    color:var(--sage);
+    font-weight:500;
+    margin-bottom:2px;
     display:block;
   }
-  p.lede{color:var(--ink-soft);font-size:.98rem;margin:0 0 20px;}
-
+  p.lede{color:var(--ink-soft);font-size:.98rem;margin:0 0 20px;max-width:52ch;}
+ 
   .notice{
     background:var(--sand);
     border-left:3px solid var(--clay);
@@ -106,7 +119,7 @@
     margin:18px 0;
   }
   .notice strong{color:var(--ink);}
-
+ 
   /* form elements */
   label{
     display:block;
@@ -134,7 +147,7 @@
   textarea{resize:vertical;min-height:80px;}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:560px){.grid2{grid-template-columns:1fr;}}
-
+ 
   fieldset{border:none;padding:0;margin:0 0 22px;}
   .age-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   @media (max-width:560px){.age-choice{grid-template-columns:1fr;}}
@@ -151,9 +164,9 @@
     border-color:var(--sage-deep);
     background:#EEF3EA;
   }
-  .choice-card h3{margin:0 0 4px;font-size:.98rem;font-family:var(--serif);}
+  .choice-card h3{margin:0 0 4px;font-size:.98rem;font-family:var(--serif);font-weight:500;}
   .choice-card p{margin:0;font-size:.8rem;color:var(--ink-soft);}
-
+ 
   .who-choice{display:flex;gap:10px;flex-wrap:wrap;}
   .pill{
     border:1.5px solid var(--line);
@@ -170,7 +183,7 @@
     color:#fff;
     font-weight:600;
   }
-
+ 
   button{
     font-family:var(--sans);
     font-weight:700;
@@ -186,9 +199,9 @@
   .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
   .btn-ghost{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line);}
   .btn-row{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px;}
-
+ 
   /* progress */
-  .progress-wrap{margin-bottom:26px;}
+  .progress-wrap{margin-bottom:22px;}
   .progress-track{
     height:6px;background:var(--sand);border-radius:99px;overflow:hidden;
   }
@@ -198,23 +211,31 @@
   }
   .progress-label{
     display:flex;justify-content:space-between;
-    font-size:.72rem;color:var(--ink-soft);margin-top:6px;
-    font-family:var(--mono);
+    font-size:.78rem;color:var(--ink-soft);margin-top:8px;
   }
-
+ 
   /* question */
+  .q-head{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    margin:22px 0 24px;
+  }
   .q-num{
-    font-family:var(--mono);
-    font-size:.72rem;
-    color:var(--sage-deep);
-    letter-spacing:.08em;
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:1.6rem;
+    color:var(--sky);
+    line-height:1;
+    flex:0 0 auto;
+    padding-top:2px;
   }
   .q-text{
     font-family:var(--serif);
     font-size:1.28rem;
     line-height:1.4;
     color:var(--ink);
-    margin:8px 0 22px;
+    margin:0;
   }
   .options{display:flex;flex-direction:column;gap:10px;}
   .opt-btn{
@@ -238,7 +259,7 @@
   .opt-btn:hover{border-color:var(--sage);}
   .opt-btn.chosen{border-color:var(--sage-deep);background:#EEF3EA;}
   .opt-btn.chosen .dot{background:var(--sage-deep);border-color:var(--sage-deep);}
-
+ 
   /* footprints trail */
   .trail{
     display:flex;gap:5px;margin-bottom:18px;flex-wrap:wrap;
@@ -249,50 +270,49 @@
   }
   .trail .step.done{background:var(--sage-deep);}
   .trail .step.current{background:var(--clay);}
-
+ 
   /* result */
   .result-badge{
     display:inline-block;
     padding:6px 16px;
     border-radius:999px;
-    font-size:.78rem;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.06em;
+    font-size:.85rem;
+    font-weight:600;
     margin-bottom:14px;
   }
   .badge-low{background:#E4EFE6;color:var(--risk-low);}
   .badge-mid{background:#F6E9D6;color:var(--risk-mid);}
   .badge-high{background:#F5E0DB;color:var(--risk-high);}
-
+ 
   .risk-meter{
     height:10px;border-radius:99px;background:var(--sand);overflow:hidden;margin:14px 0 6px;
   }
   .risk-fill{height:100%;border-radius:99px;}
-
+ 
   .rec-box{
     border:1px solid var(--line);
+    border-left:3px solid var(--clay);
     border-radius:11px;
     padding:18px;
     background:var(--cream);
     margin-top:16px;
   }
-  .rec-box h4{margin:0 0 8px;font-family:var(--serif);font-size:1.05rem;}
+  .rec-box h4{margin:0 0 8px;font-family:var(--serif);font-weight:500;font-size:1.05rem;}
   .rec-box p{margin:0;font-size:.9rem;color:var(--ink-soft);}
-
+ 
   .summary-grid{
     display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;
     font-size:.85rem;margin:16px 0;
   }
-  .summary-grid dt{color:var(--ink-soft);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;}
+  .summary-grid dt{color:var(--ink-soft);font-size:.76rem;}
   .summary-grid dd{margin:2px 0 0;font-weight:600;}
-
+ 
   @media print{
     body{background:#fff;}
     .no-print{display:none !important;}
     .card{box-shadow:none;border:1px solid #ccc;}
   }
-
+ 
   .hidden{display:none !important;}
   .footer-note{
     text-align:center;font-size:.75rem;color:var(--ink-soft);margin-top:30px;
@@ -310,7 +330,7 @@
 </head>
 <body>
 <div class="app">
-
+ 
   <header class="brand">
     <svg class="mark" viewBox="0 0 40 40" fill="none">
       <circle cx="20" cy="20" r="19" stroke="#3F5EE0" stroke-width="1.5"/>
@@ -321,14 +341,12 @@
     </svg>
     <div>
       <h1>Fisioterapia del Funcionamiento Conjunto</h1>
-      <p>Hospital Edgardo Rebagliati Martins - EsSalud</p>
-      <p>Rehabilitación Pediátrica</p>
-      <p>- Lima, Perú</p>
+      <p class="institution"><b>Hospital Edgardo Rebagliati Martins</b> · EsSalud<br>Rehabilitación Pediátrica — Lima, Perú</p>
     </div>
   </header>
-
-  <h2 class="main-title">CRIBADO PARA LA DETECCIÓN TEMPRANA DE AUTISMO (TEA) EN LA POBLACIÓN INFANTIL</h2>
-
+ 
+  <h2 class="main-title">Cribado para la detección temprana de autismo (TEA) en la población infantil</h2>
+ 
   <!-- SAVED EVALUATIONS -->
   <div id="screen-saved" class="card hidden">
     <span class="eyebrow">Registros en este dispositivo</span>
@@ -336,15 +354,15 @@
     <p class="lede">Estas evaluaciones se guardaron previamente en este navegador.</p>
     <div id="saved-list" style="display:flex;flex-direction:column;gap:10px;"></div>
   </div>
-
+ 
   <!-- SCREEN 0: INTRO / DATOS -->
   <div id="screen-intro" class="card">
     <span class="eyebrow">Antes de empezar</span>
     <h2 class="section-title">Datos de la evaluación</h2>
     <p class="lede">Esta herramienta ayuda a identificar señales tempranas que ameritan una evaluación especializada. No reemplaza un diagnóstico clínico.</p>
-
+ 
     <div class="notice"><strong>Importante:</strong> los resultados son orientativos. Un puntaje elevado no es un diagnóstico; siempre debe confirmarse con un profesional especializado en desarrollo infantil.</div>
-
+ 
     <div class="field">
       <label>¿Quién completa el cuestionario?</label>
       <div class="who-choice" id="who-choice">
@@ -353,7 +371,7 @@
         <div class="pill" data-who="Ambos">Ambos</div>
       </div>
     </div>
-
+ 
     <div class="grid2">
       <div class="field">
         <label for="ninoNombre">Nombre del niño/a</label>
@@ -380,7 +398,7 @@
         <input type="text" id="diagnosticos" placeholder="Ej. prematuridad, hipotonía, ninguno">
       </div>
     </div>
-
+ 
     <div class="field">
       <label>Rango de edad del niño/a (para elegir el set de preguntas)</label>
       <div class="age-choice" id="age-choice">
@@ -394,13 +412,13 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="btn-row">
       <span></span>
       <button class="btn-primary" id="btn-start" disabled>Comenzar cuestionario →</button>
     </div>
   </div>
-
+ 
   <!-- SCREEN 1: QUESTIONNAIRE -->
   <div id="screen-quiz" class="card hidden">
     <div class="progress-wrap">
@@ -411,32 +429,33 @@
       </div>
     </div>
     <div class="trail" id="trail"></div>
-
-    <span class="q-num" id="q-num">PREGUNTA 1</span>
-    <div class="q-text" id="q-text">—</div>
+ 
+    <div class="q-head">
+      <span class="q-num" id="q-num">01</span>
+      <div class="q-text" id="q-text">—</div>
+    </div>
     <div class="options" id="q-options"></div>
-
+ 
     <div class="btn-row">
       <button class="btn-ghost" id="btn-back">← Anterior</button>
       <button class="btn-primary" id="btn-next" disabled>Siguiente →</button>
     </div>
   </div>
-
+ 
   <!-- SCREEN 2: RESULT -->
   <div id="screen-result" class="card hidden">
-    <span class="eyebrow">Resultado de la evaluación</span>
-    <h2 class="section-title" id="result-title">—</h2>
-
+    <h2 class="section-title">Resultado del cribado</h2>
+ 
     <div id="result-badge-wrap"></div>
-
+ 
     <div class="risk-meter"><div class="risk-fill" id="risk-fill"></div></div>
     <p style="font-size:.82rem;color:var(--ink-soft);margin-top:2px;" id="risk-score-label">—</p>
-
+ 
     <div class="rec-box" id="rec-box">
       <h4>Recomendación</h4>
       <p id="rec-text">—</p>
     </div>
-
+ 
     <dl class="summary-grid">
       <div><dt>Niño/a</dt><dd id="sum-nombre">—</dd></div>
       <div><dt>Edad</dt><dd id="sum-edad">—</dd></div>
@@ -445,14 +464,14 @@
       <div><dt>Diagnósticos asociados</dt><dd id="sum-diag">—</dd></div>
       <div><dt>Cuestionario aplicado</dt><dd id="sum-tipo">—</dd></div>
     </dl>
-
+ 
     <div class="field">
       <label for="observaciones">Observaciones del evaluador</label>
       <textarea id="observaciones" placeholder="Anote comportamientos observados, contexto de la evaluación, o cualquier detalle relevante..."></textarea>
     </div>
-
+ 
     <div class="notice">Este resultado es una herramienta de tamizaje/orientación, no constituye un diagnóstico clínico. La confirmación diagnóstica solo puede realizarla un profesional especializado (neuropediatra, psiquiatra pediátrico o equipo multidisciplinario en desarrollo infantil).</div>
-
+ 
     <div class="btn-row no-print" style="flex-wrap:wrap;">
       <button class="btn-ghost" id="btn-restart">Nueva evaluación</button>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -462,10 +481,10 @@
     </div>
     <p class="no-print" id="save-confirm" style="font-size:.78rem;color:var(--sage-deep);font-weight:600;margin-top:10px;display:none;">Evaluación guardada en este dispositivo.</p>
   </div>
-
-  <p class="footer-note no-print">Herramienta de apoyo para la detección temprana · Uso profesional y familiar</p>
+ 
+  <p class="footer-note no-print">Herramienta de apoyo para la detección temprana, de uso profesional y familiar.</p>
 </div>
-
+ 
 <script>
 (function(){
   // ---------- DATA ----------
@@ -491,7 +510,7 @@
     {t:"Si algo nuevo ocurre, ¿su hijo/a mira su cara para ver cómo reacciona usted?", risk:"no"},
     {t:"¿A su hijo/a le gusta el movimiento (que lo/a hamaquen, saltar en sus rodillas)?", risk:"no"},
   ];
-
+ 
   const MAYOR = [
     {t:"¿El niño/a mantiene contacto visual de forma natural durante una conversación o juego?", risk:"no"},
     {t:"¿Comparte intereses o logros con otras personas (mostrando, señalando o comentando)?", risk:"no"},
@@ -510,7 +529,7 @@
     {t:"¿Presenta un desarrollo del lenguaje notablemente distinto al de otros niños de su edad (regresión, ecolalia, ausencia de lenguaje)?", risk:"si"},
     {t:"¿Expresa y reconoce emociones propias y ajenas de forma adecuada para su edad?", risk:"no"},
   ];
-
+ 
   // ---------- STATE ----------
   let state = {
     who: null,
@@ -519,12 +538,12 @@
     answers: [],
     questions: []
   };
-
+ 
   // ---------- INTRO SCREEN LOGIC ----------
   const whoChoice = document.getElementById('who-choice');
   const ageChoice = document.getElementById('age-choice');
   const btnStart = document.getElementById('btn-start');
-
+ 
   whoChoice.addEventListener('click', (e)=>{
     const pill = e.target.closest('.pill');
     if(!pill) return;
@@ -533,7 +552,7 @@
     state.who = pill.dataset.who;
     checkStartEnabled();
   });
-
+ 
   ageChoice.addEventListener('click', (e)=>{
     const card = e.target.closest('.choice-card');
     if(!card) return;
@@ -542,11 +561,11 @@
     state.ageSet = card.dataset.age;
     checkStartEnabled();
   });
-
+ 
   function checkStartEnabled(){
     btnStart.disabled = !(state.who && state.ageSet);
   }
-
+ 
   btnStart.addEventListener('click', ()=>{
     state.questions = state.ageSet === 'temprana' ? MCHAT : MAYOR;
     state.answers = new Array(state.questions.length).fill(null);
@@ -555,7 +574,7 @@
     document.getElementById('screen-quiz').classList.remove('hidden');
     renderQuestion();
   });
-
+ 
   // ---------- QUIZ SCREEN LOGIC ----------
   const qNum = document.getElementById('q-num');
   const qText = document.getElementById('q-text');
@@ -566,7 +585,7 @@
   const trail = document.getElementById('trail');
   const btnBack = document.getElementById('btn-back');
   const btnNext = document.getElementById('btn-next');
-
+ 
   function renderTrail(){
     trail.innerHTML = '';
     state.questions.forEach((_,i)=>{
@@ -575,17 +594,17 @@
       trail.appendChild(d);
     });
   }
-
+ 
   function renderQuestion(){
     const total = state.questions.length;
     const q = state.questions[state.idx];
-    qNum.textContent = `PREGUNTA ${state.idx+1} DE ${total}`;
+    qNum.textContent = String(state.idx+1).padStart(2,'0');
     qText.textContent = q.t;
     progressFill.style.width = ((state.idx)/total*100) + '%';
     progressText.textContent = `Pregunta ${state.idx+1} de ${total}`;
     progressSet.textContent = state.ageSet === 'temprana' ? 'M-CHAT-R (16–30 meses)' : 'Señales generales + AQ (3+ años)';
     renderTrail();
-
+ 
     qOptions.innerHTML = '';
     ['Sí','No'].forEach(label=>{
       const btn = document.createElement('button');
@@ -599,16 +618,16 @@
       });
       qOptions.appendChild(btn);
     });
-
+ 
     btnNext.disabled = state.answers[state.idx] === null;
     btnNext.textContent = state.idx === total - 1 ? 'Ver resultado →' : 'Siguiente →';
     btnBack.style.visibility = state.idx === 0 ? 'hidden' : 'visible';
   }
-
+ 
   btnBack.addEventListener('click', ()=>{
     if(state.idx > 0){ state.idx--; renderQuestion(); }
   });
-
+ 
   btnNext.addEventListener('click', ()=>{
     if(state.idx < state.questions.length - 1){
       state.idx++;
@@ -617,7 +636,7 @@
       showResult();
     }
   });
-
+ 
   // ---------- RESULT SCREEN LOGIC ----------
   function computeRisk(){
     let flagged = 0;
@@ -636,19 +655,18 @@
     }
     return {flagged, total, pct, level};
   }
-
+ 
   function showResult(){
     document.getElementById('screen-quiz').classList.add('hidden');
     document.getElementById('screen-result').classList.remove('hidden');
-
+ 
     const {flagged, total, pct, level} = computeRisk();
-
+ 
     const badgeWrap = document.getElementById('result-badge-wrap');
     const riskFill = document.getElementById('risk-fill');
     const riskLabel = document.getElementById('risk-score-label');
     const recText = document.getElementById('rec-text');
-    const resultTitle = document.getElementById('result-title');
-
+ 
     const config = {
       low: {badge:'badge-low', color:'var(--risk-low)', title:'Riesgo bajo',
         rec:'No se identificaron señales significativas en este tamizaje. Se recomienda continuar con el seguimiento habitual del desarrollo en los controles pediátricos de rutina.'},
@@ -658,24 +676,23 @@
         rec:'Se identificó un número importante de señales de alerta. Se recomienda derivar de forma prioritaria a una evaluación diagnóstica especializada (neuropediatría, psiquiatra pediátrico o equipo multidisciplinario) lo antes posible.'}
     };
     const c = config[level];
-
-    resultTitle.textContent = c.title;
+ 
     badgeWrap.innerHTML = `<span class="result-badge ${c.badge}">${c.title}</span>`;
     riskFill.style.width = pct + '%';
     riskFill.style.background = c.color;
     riskLabel.textContent = `${flagged} de ${total} ítems con señal de alerta (${pct}%)`;
     recText.textContent = c.rec;
-
+ 
     document.getElementById('sum-nombre').textContent = document.getElementById('ninoNombre').value || '—';
     document.getElementById('sum-edad').textContent = document.getElementById('ninoEdad').value || '—';
     document.getElementById('sum-fecha').textContent = document.getElementById('fechaEval').value || '—';
     document.getElementById('sum-evaluador').textContent = document.getElementById('evaluador').value || '—';
     document.getElementById('sum-diag').textContent = document.getElementById('diagnosticos').value || 'Ninguno reportado';
     document.getElementById('sum-tipo').textContent = state.ageSet === 'temprana' ? 'M-CHAT-R (16–30 meses)' : 'Señales generales + AQ (3+ años)';
-
+ 
     state.lastResult = {flagged, total, pct, level, title:c.title, rec:c.rec};
   }
-
+ 
   function collectRecord(){
     return {
       nombre: document.getElementById('ninoNombre').value || 'Sin nombre',
@@ -691,12 +708,12 @@
       guardadoEl: new Date().toISOString()
     };
   }
-
+ 
   function getSavedRecords(){
     try{ return JSON.parse(localStorage.getItem('camino_temprano_evaluaciones') || '[]'); }
     catch(e){ return []; }
   }
-
+ 
   document.getElementById('btn-save').addEventListener('click', ()=>{
     const record = collectRecord();
     const records = getSavedRecords();
@@ -710,7 +727,7 @@
       alert('No se pudo guardar en este dispositivo. Puedes descargar el informe como respaldo.');
     }
   });
-
+ 
   function downloadReport(){
     const r = collectRecord();
     const res = r.resultado || {};
@@ -757,7 +774,7 @@ td.label{color:#4C5A88;width:220px;font-size:.8rem;text-transform:uppercase;lett
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
-
+ 
   function renderSavedList(){
     const wrap = document.getElementById('saved-list');
     const screenSaved = document.getElementById('screen-saved');
@@ -784,11 +801,12 @@ td.label{color:#4C5A88;width:220px;font-size:.8rem;text-transform:uppercase;lett
     });
   }
   renderSavedList();
-
+ 
   document.getElementById('btn-download').addEventListener('click', downloadReport);
   document.getElementById('btn-restart').addEventListener('click', ()=>window.location.reload());
-
+ 
 })();
 </script>
 </body>
 </html>
+ 
