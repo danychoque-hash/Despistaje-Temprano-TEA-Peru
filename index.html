@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root{
     --cream:#EEF2FC;
@@ -382,7 +383,7 @@
         <input type="date" id="ninoFNac">
       </div>
       <div class="field">
-        <label for="ninoEdad">Edad actual</label>
+        <label for="ninoEdad">Edad actual <span style="font-weight:400;color:var(--ink-soft);">(se calcula sola, puedes ajustarla)</span></label>
         <input type="text" id="ninoEdad" placeholder="Ej. 2 años 4 meses">
       </div>
       <div class="field">
@@ -476,7 +477,7 @@
       <button class="btn-ghost" id="btn-restart">Nueva evaluación</button>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <button class="btn-ghost" id="btn-save">Guardar evaluación ✓</button>
-        <button class="btn-primary" id="btn-download">Descargar informe ⤓</button>
+        <button class="btn-primary" id="btn-download">Descargar informe en PDF ⤓</button>
       </div>
     </div>
     <p class="no-print" id="save-confirm" style="font-size:.78rem;color:var(--sage-deep);font-weight:600;margin-top:10px;display:none;">Evaluación guardada en este dispositivo.</p>
@@ -543,6 +544,47 @@
   const whoChoice = document.getElementById('who-choice');
   const ageChoice = document.getElementById('age-choice');
   const btnStart = document.getElementById('btn-start');
+ 
+  // Cálculo automático de la edad a partir de la fecha de nacimiento
+  const ninoFNacInput = document.getElementById('ninoFNac');
+  const ninoEdadInput = document.getElementById('ninoEdad');
+  let edadAutocalculada = true; // se apaga si el usuario edita el campo a mano
+ 
+  function calcularEdadTexto(fNacStr){
+    if(!fNacStr) return '';
+    const fNac = new Date(fNacStr + 'T00:00:00');
+    const hoy = new Date();
+    if(isNaN(fNac.getTime()) || fNac > hoy) return '';
+ 
+    let anios = hoy.getFullYear() - fNac.getFullYear();
+    let meses = hoy.getMonth() - fNac.getMonth();
+    let dias = hoy.getDate() - fNac.getDate();
+    if(dias < 0){ meses--; }
+    if(meses < 0){ anios--; meses += 12; }
+ 
+    const totalMeses = anios * 12 + meses;
+    if(totalMeses < 1){
+      return 'Menos de 1 mes';
+    }
+    if(anios < 1){
+      return `${meses} mes${meses === 1 ? '' : 'es'}`;
+    }
+    if(meses === 0){
+      return `${anios} ${anios === 1 ? 'año' : 'años'}`;
+    }
+    return `${anios} ${anios === 1 ? 'año' : 'años'} ${meses} mes${meses === 1 ? '' : 'es'}`;
+  }
+ 
+  ninoFNacInput.addEventListener('change', ()=>{
+    if(!edadAutocalculada) return;
+    const texto = calcularEdadTexto(ninoFNacInput.value);
+    if(texto) ninoEdadInput.value = texto;
+  });
+ 
+  ninoEdadInput.addEventListener('input', ()=>{
+    // si el usuario escribe manualmente, dejamos de sobrescribir su valor
+    edadAutocalculada = false;
+  });
  
   whoChoice.addEventListener('click', (e)=>{
     const pill = e.target.closest('.pill');
@@ -728,51 +770,87 @@
     }
   });
  
+  function buildReportHTML(r, res){
+    return `
+<div class="pdf-doc" style="font-family:Georgia,serif;color:#1A2144;padding:26px 30px;background:#fff;">
+  <h1 style="color:#22349C;font-size:19px;border-bottom:2px solid #3F5EE0;padding-bottom:10px;margin:0 0 4px;">Fisioterapia del Funcionamiento Conjunto</h1>
+  <p style="color:#4C5A88;font-size:12px;margin:0 0 20px;">Hospital Edgardo Rebagliati Martins - EsSalud · Rehabilitación Pediátrica · Lima, Perú</p>
+  <h2 style="color:#3F5EE0;font-size:15px;margin:0 0 8px;">Cribado para la detección temprana de autismo (TEA)</h2>
+  <table style="width:100%;border-collapse:collapse;margin-top:6px;">
+    <tr><td style="color:#4C5A88;width:190px;font-size:11px;padding:5px 0;vertical-align:top;">Niño/a</td><td style="font-size:13px;padding:5px 0;">${r.nombre}</td></tr>
+    <tr><td style="color:#4C5A88;font-size:11px;padding:5px 0;vertical-align:top;">Edad</td><td style="font-size:13px;padding:5px 0;">${r.edad}</td></tr>
+    <tr><td style="color:#4C5A88;font-size:11px;padding:5px 0;vertical-align:top;">Fecha de evaluación</td><td style="font-size:13px;padding:5px 0;">${r.fechaEval}</td></tr>
+    <tr><td style="color:#4C5A88;font-size:11px;padding:5px 0;vertical-align:top;">Evaluador</td><td style="font-size:13px;padding:5px 0;">${r.evaluador}</td></tr>
+    <tr><td style="color:#4C5A88;font-size:11px;padding:5px 0;vertical-align:top;">Diagnósticos asociados</td><td style="font-size:13px;padding:5px 0;">${r.diagnosticos || 'Ninguno reportado'}</td></tr>
+    <tr><td style="color:#4C5A88;font-size:11px;padding:5px 0;vertical-align:top;">Cuestionario aplicado</td><td style="font-size:13px;padding:5px 0;">${r.tipo}</td></tr>
+    <tr><td style="color:#4C5A88;font-size:11px;padding:5px 0;vertical-align:top;">Completado por</td><td style="font-size:13px;padding:5px 0;">${r.who || '—'}</td></tr>
+  </table>
+  <h2 style="color:#3F5EE0;font-size:15px;margin:24px 0 8px;">Resultado</h2>
+  <p style="margin:0 0 8px;"><span style="display:inline-block;padding:5px 14px;border-radius:20px;font-weight:bold;background:#E1E7FA;color:#22349C;font-size:13px;">${res.title || '—'}</span></p>
+  <p style="font-size:13px;margin:0 0 10px;">${res.flagged ?? '—'} de ${res.total ?? '—'} ítems con señal de alerta (${res.pct ?? '—'}%)</p>
+  <div style="background:#EEF2FC;border-left:4px solid #D9A441;padding:14px 16px;border-radius:6px;font-size:13px;"><strong>Recomendación:</strong> ${res.rec || '—'}</div>
+  <h2 style="color:#3F5EE0;font-size:15px;margin:24px 0 8px;">Observaciones del evaluador</h2>
+  <p style="font-size:13px;">${r.observaciones ? r.observaciones.replace(/\n/g,'<br>') : 'Sin observaciones registradas.'}</p>
+  <p style="font-size:11px;color:#4C5A88;margin-top:24px;border-top:1px solid #C7D1F2;padding-top:12px;">Este resultado es una herramienta de tamizaje/orientación, no constituye un diagnóstico clínico. La confirmación diagnóstica solo puede realizarla un profesional especializado (neuropediatra, psiquiatra pediátrico o equipo multidisciplinario en desarrollo infantil).</p>
+</div>`;
+  }
+ 
+  function printFallback(r, res, safeName){
+    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Informe - ${r.nombre}</title>
+<style>@page{ size:A4; margin:18mm; } body{margin:0;}
+.print-hint{background:#FFF7E0;border:1px solid #E8D090;color:#6b5a1e;font-family:Arial,sans-serif;font-size:.85rem;padding:10px 14px;border-radius:8px;margin:20px 26px 0;}
+@media print{ .print-hint{display:none;} }</style></head><body>
+<div class="print-hint">Se abrió el diálogo de impresión — elige <strong>"Guardar como PDF"</strong> como destino/impresora para descargar el informe.</div>
+${buildReportHTML(r, res)}
+<script>window.onload=function(){setTimeout(function(){window.focus();window.print();},200);};<\/script>
+</body></html>`;
+    const win = window.open('', '_blank', 'width=850,height=1000');
+    if(!win){
+      alert('El navegador bloqueó la ventana emergente. Permite las ventanas emergentes para este sitio y vuelve a intentarlo.');
+      return;
+    }
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+  }
+ 
   function downloadReport(){
     const r = collectRecord();
     const res = r.resultado || {};
-    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-<title>Informe - ${r.nombre}</title>
-<style>
-body{font-family:Georgia,serif;max-width:680px;margin:40px auto;color:#1A2144;padding:0 20px;}
-h1{color:#22349C;font-size:1.4rem;border-bottom:2px solid #3F5EE0;padding-bottom:10px;}
-h2{color:#3F5EE0;font-size:1.05rem;margin-top:28px;}
-table{width:100%;border-collapse:collapse;margin-top:10px;}
-td{padding:6px 0;font-size:.95rem;vertical-align:top;}
-td.label{color:#4C5A88;width:220px;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;}
-.badge{display:inline-block;padding:5px 14px;border-radius:20px;font-weight:bold;background:#E1E7FA;color:#22349C;}
-.rec{background:#EEF2FC;border-left:4px solid #D9A441;padding:14px 16px;margin-top:10px;border-radius:6px;}
-.notice{font-size:.8rem;color:#4C5A88;margin-top:30px;border-top:1px solid #C7D1F2;padding-top:14px;}
-</style></head><body>
-<h1>Fisioterapia del Funcionamiento Conjunto — Hospital Edgardo Rebagliati Martins - EsSalud (Rehabilitación Pediátrica, Lima, Perú)</h1>
-<h2>Cribado para la detección temprana de autismo (TEA)</h2>
-<table>
-<tr><td class="label">Niño/a</td><td>${r.nombre}</td></tr>
-<tr><td class="label">Edad</td><td>${r.edad}</td></tr>
-<tr><td class="label">Fecha de evaluación</td><td>${r.fechaEval}</td></tr>
-<tr><td class="label">Evaluador</td><td>${r.evaluador}</td></tr>
-<tr><td class="label">Diagnósticos asociados</td><td>${r.diagnosticos || 'Ninguno reportado'}</td></tr>
-<tr><td class="label">Cuestionario aplicado</td><td>${r.tipo}</td></tr>
-<tr><td class="label">Completado por</td><td>${r.who || '—'}</td></tr>
-</table>
-<h2>Resultado</h2>
-<p><span class="badge">${res.title || '—'}</span></p>
-<p>${res.flagged ?? '—'} de ${res.total ?? '—'} ítems con señal de alerta (${res.pct ?? '—'}%)</p>
-<div class="rec"><strong>Recomendación:</strong> ${res.rec || '—'}</div>
-<h2>Observaciones del evaluador</h2>
-<p>${r.observaciones ? r.observaciones.replace(/\\n/g,'<br>') : 'Sin observaciones registradas.'}</p>
-<p class="notice">Este resultado es una herramienta de tamizaje/orientación, no constituye un diagnóstico clínico. La confirmación diagnóstica solo puede realizarla un profesional especializado (neuropediatra, psiquiatra pediátrico o equipo multidisciplinario en desarrollo infantil).</p>
-</body></html>`;
-    const blob = new Blob([html], {type:'text/html'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
     const safeName = (r.nombre || 'evaluacion').replace(/[^a-z0-9áéíóúñ]+/gi,'_');
-    a.href = url;
-    a.download = `informe_${safeName}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+ 
+    if(typeof html2pdf === 'undefined'){
+      // Sin conexión a internet u otro problema de carga: usamos el método de impresión como respaldo
+      printFallback(r, res, safeName);
+      return;
+    }
+ 
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.left = '-10000px';
+    container.style.top = '0';
+    container.style.width = '700px';
+    container.innerHTML = buildReportHTML(r, res);
+    document.body.appendChild(container);
+ 
+    const btn = document.getElementById('btn-download');
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Generando PDF…';
+ 
+    html2pdf().set({
+      margin: 10,
+      filename: `informe_${safeName}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(container).save().catch(()=>{
+      printFallback(r, res, safeName);
+    }).finally(()=>{
+      document.body.removeChild(container);
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+    });
   }
  
   function renderSavedList(){
